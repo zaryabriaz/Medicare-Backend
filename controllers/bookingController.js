@@ -44,12 +44,33 @@ export const getCheckoutSession = async(req, res) =>{
         const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
         console.log('Stripe instance created')
 
-        // Create Stripe checkout session with hardcoded URLs
+        // Define base URL
+        const baseUrl = 'https://doappointment.netlify.app'
+        
+        // Construct URLs
+        const successUrl = `${baseUrl}/checkout-success`
+        const cancelUrl = `${baseUrl}/doctors/${doctor._id}`
+
+        // Validate URLs
+        if (!successUrl.startsWith('http')) {
+            throw new Error(`Invalid success URL: ${successUrl}`)
+        }
+        if (!cancelUrl.startsWith('http')) {
+            throw new Error(`Invalid cancel URL: ${cancelUrl}`)
+        }
+
+        console.log('URLs being used:', {
+            successUrl,
+            cancelUrl,
+            doctorId: doctor._id
+        })
+
+        // Create Stripe checkout session
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             mode: 'payment',
-            success_url: 'https://doappointment.netlify.app/checkout-success',
-            cancel_url: `https://doappointment.netlify.app/doctors/${doctor._id}`,
+            success_url: successUrl,
+            cancel_url: cancelUrl,
             customer_email: user.email,
             client_reference_id: req.params.doctorId,
             line_items: [
