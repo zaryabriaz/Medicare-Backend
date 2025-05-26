@@ -36,8 +36,8 @@ export const getCheckoutSession = async(req, res) =>{
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             mode: 'payment',
-            success_url: `${process.env.CLIENT_URL}/checkout-success`,
-            cancel_url: `${process.env.CLIENT_URL}/doctors/${doctor._id}`,
+            success_url: 'https://medicare-frontend-production.up.railway.app/checkout-success',
+            cancel_url: `https://medicare-frontend-production.up.railway.app/doctors/${doctor._id}`,
             customer_email: user.email,
             client_reference_id: req.params.doctorId,
             line_items: [
