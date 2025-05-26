@@ -46,10 +46,10 @@ export const getCheckoutSession = async(req, res) =>{
 
         // Use environment variable for frontend URL
         const frontendUrl = 'https://doappointment.netlify.app'
-        console.log('Using frontend URL:', frontendUrl)
+        console.log('Using frontend URL:', 'https://doappointment.netlify.app')
 
-        const successUrl = `${frontendUrl}/checkout-success`
-        const cancelUrl = `${frontendUrl}/doctors/${doctor._id}`
+        const successUrl = 'https://doappointment.netlify.app/checkout-success'
+        const cancelUrl = `https://doappointment.netlify.app/doctors/${doctor._id}`
         
         console.log('Generated URLs:', { successUrl, cancelUrl })
 
