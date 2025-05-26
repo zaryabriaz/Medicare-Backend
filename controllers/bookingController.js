@@ -45,7 +45,7 @@ export const getCheckoutSession = async(req, res) =>{
         console.log('Stripe instance created')
 
         // Use environment variable for frontend URL
-        const frontendUrl = process.env.CLIENT_SITE_URL || 'https://doappointment.netlify.app'
+        const frontendUrl = 'https://doappointment.netlify.app'
         console.log('Using frontend URL:', frontendUrl)
 
         const successUrl = `${frontendUrl}/checkout-success`
