@@ -44,8 +44,8 @@ export const getCheckoutSession = async(req, res) =>{
         const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
         console.log('Stripe instance created')
 
-        // Get the frontend URL from the request origin
-        const frontendUrl = req.headers.origin || 'http://localhost:5173'
+        // Use the correct Netlify frontend URL
+        const frontendUrl = 'https://doappointment.netlify.app'
         console.log('Using frontend URL:', frontendUrl)
 
         const successUrl = `${frontendUrl}/checkout-success`
