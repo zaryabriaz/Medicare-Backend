@@ -7,15 +7,18 @@ import authRoute from './routes/auth.js'
 import userRoute from './routes/user.js'
 import doctorRoute from './routes/doctor.js'
 import reviewRoute from './routes/review.js'
-
+import bookingRoute from './routes/booking.js'
 
 dotenv.config()
 
 const app = express()
-const port = process.env.PORT || 8000
+const port = process.env.PORT || 5000
 
 const corsOptions = {
-    origin: true
+    origin: true, // Allow all origins in development
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }
 
 app.get('/',(req, res) =>{
@@ -25,10 +28,7 @@ app.get('/',(req, res) =>{
 mongoose.set('strictQuery', false)
 const connectDB = async()=>{
     try{
-        await mongoose.connect(process.env.MONGO_URL,{
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        })
+        await mongoose.connect(process.env.MONGO_URL)
         console.log('MongoDB database is connected')
     }catch(err){
         console.log('MongoDB database is not connected')
@@ -42,6 +42,8 @@ app.use('/api/v1/auth', authRoute); //domain/api/v1/auth
 app.use('/api/v1/users', userRoute); 
 app.use('/api/v1/doctors', doctorRoute);
 app.use('/api/v1/reviews', reviewRoute);
+app.use('/api/v1/bookings', bookingRoute);
+
 
 app.listen(port,()=>{
     connectDB();
