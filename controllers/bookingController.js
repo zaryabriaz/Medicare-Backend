@@ -44,17 +44,20 @@ export const getCheckoutSession = async(req, res) =>{
         const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
         console.log('Stripe instance created')
 
-        // Use environment variable for frontend URL
+        // Define URLs explicitly
         const frontendUrl = 'https://doappointment.netlify.app'
-        console.log('Using frontend URL:', 'https://doappointment.netlify.app')
+        const successUrl = `${frontendUrl}/checkout-success`
+        const cancelUrl = `${frontendUrl}/doctors/${doctor._id}`
 
-        const successUrl = 'https://doappointment.netlify.app/checkout-success'
-        const cancelUrl = `https://doappointment.netlify.app/doctors/${doctor._id}`
-        
-        console.log('Generated URLs:', { successUrl, cancelUrl })
+        console.log('URL Configuration:', {
+            frontendUrl,
+            successUrl,
+            cancelUrl,
+            doctorId: doctor._id
+        })
 
         // Create Stripe checkout session
-        const session = await stripe.checkout.sessions.create({
+        const sessionConfig = {
             payment_method_types: ['card'],
             mode: 'payment',
             success_url: successUrl,
@@ -75,7 +78,11 @@ export const getCheckoutSession = async(req, res) =>{
                     quantity: 1
                 }
             ]
-        })
+        }
+
+        console.log('Creating Stripe session with config:', sessionConfig)
+
+        const session = await stripe.checkout.sessions.create(sessionConfig)
         console.log('Stripe session created:', session.id)
 
         // Create booking record
