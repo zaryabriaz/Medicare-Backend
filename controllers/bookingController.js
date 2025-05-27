@@ -48,8 +48,8 @@ export const getCheckoutSession = async(req, res) =>{
         const baseUrl = 'https://doappointment.netlify.app'
         
         // Construct URLs
-        const successUrl = `${baseUrl}/checkout-success`
-        const cancelUrl = `${baseUrl}/doctors/${doctor._id}`
+        const successUrl = `${process.env.CLIENT_SITE_URL}/checkout-success`
+        const cancelUrl = `${req.protocol}://${req.get('host')}/doctors/${doctor._id}`
 
         // Validate URLs
         if (!successUrl.startsWith('http')) {
