@@ -21,9 +21,17 @@ const corsOptions = {
     allowedHeaders: ['Content-Type', 'Authorization']
 }
 
-app.get('/',(req, res) =>{
-    res.send('Api is Working')
-})
+app.get('/', (req, res) => {
+    res.json({
+      message: 'Api is Working',
+      env: {
+        JWT_SECRET_KEY: process.env.JWT_SECRET_KEY ? 'loaded' : 'missing',
+        STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY ? 'loaded' : 'missing',
+        CLIENT_SITE_URL: process.env.CLIENT_SITE_URL,
+      }
+    });
+  });
+  
 
 mongoose.set('strictQuery', false)
 const connectDB = async()=>{
